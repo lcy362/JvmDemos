@@ -19,6 +19,10 @@ public class ClassFileAnalyzer {
         int curse = 0;
         byte[] magic = Arrays.copyOfRange(bytes, curse, curse+=4);
         System.out.println("magic is: " + binary(magic, 16));
+        byte[] minorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
+        byte[] majorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
+        System.out.println("majorVersion: " + binary(majorVersion, 10));
+        System.out.println("minorVersion: " + binary(minorVersion, 10));
     }
 
     public static String binary(byte[] bytes, int radix){
