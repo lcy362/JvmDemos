@@ -1,5 +1,7 @@
 package com.mallow.jvm.tools.ClassFileAnalyzer;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,8 +14,7 @@ public class ClassFileAnalyzer {
     public static void main(String args[]) throws IOException {
         File file = new File("TestClass.class");
         FileInputStream inputStream = new FileInputStream(file);
-        byte[] bytes = new byte[2000];
-        inputStream.read(bytes);
+        byte[] bytes = IOUtils.toByteArray(inputStream);
         System.out.println(binary(bytes, 16));
     }
 
