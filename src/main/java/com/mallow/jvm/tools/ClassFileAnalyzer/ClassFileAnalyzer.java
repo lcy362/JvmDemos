@@ -24,7 +24,15 @@ public class ClassFileAnalyzer {
         System.out.println("majorVersion: " + binary(majorVersion, 10));
         System.out.println("minorVersion: " + binary(minorVersion, 10));
         byte[] constantPoolSize = Arrays.copyOfRange(bytes, curse, curse+=2);
-        System.out.println("constantPoolSize: " + binary(constantPoolSize, 10));
+        int constantSize = Integer.parseInt(binary(constantPoolSize, 10));
+        System.out.println("constantPoolSize: " + constantSize);
+        for (int i = 0; i < constantSize; i++) {
+            byte[] constanTag = Arrays.copyOfRange(bytes, curse, curse+=1);
+            int tag = Integer.parseInt(binary(constanTag, 10));
+            ConstantPoolInfo poolInfo = ConstantPoolInfo.fromTag(tag);
+            System.out.println(poolInfo);
+
+        }
     }
 
     public static String binary(byte[] bytes, int radix){
