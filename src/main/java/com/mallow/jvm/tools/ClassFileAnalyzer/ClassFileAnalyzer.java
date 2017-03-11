@@ -23,6 +23,8 @@ public class ClassFileAnalyzer {
         byte[] majorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
         System.out.println("majorVersion: " + binary(majorVersion, 10));
         System.out.println("minorVersion: " + binary(minorVersion, 10));
+        byte[] constantPoolSize = Arrays.copyOfRange(bytes, curse, curse+=2);
+        System.out.println("constantPoolSize: " + binary(constantPoolSize, 10));
     }
 
     public static String binary(byte[] bytes, int radix){
