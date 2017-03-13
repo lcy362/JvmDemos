@@ -31,7 +31,14 @@ public class ClassFileAnalyzer {
             int tag = Integer.parseInt(binary(constanTag, 10));
             ConstantPoolInfo poolInfo = ConstantPoolInfo.fromTag(tag);
             System.out.println(poolInfo);
-
+            switch (poolInfo) {
+                case CONSTANT_METHODREF_INFO:
+                    byte[] classIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    byte[] nameAndTypeIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    System.out.println("class index: " + binary(classIndex, 10));
+                    System.out.println("name and type index: " + binary(nameAndTypeIndex, 10));
+                    break;
+            }
         }
     }
 
