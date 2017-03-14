@@ -26,7 +26,7 @@ public class ClassFileAnalyzer {
         byte[] constantPoolSize = Arrays.copyOfRange(bytes, curse, curse+=2);
         int constantSize = Integer.parseInt(binary(constantPoolSize, 10));
         System.out.println("constantPoolSize: " + constantSize);
-        for (int i = 0; i < constantSize; i++) {
+        for (int i = 0; i < constantSize - 1; i++) {
             byte[] constanTag = Arrays.copyOfRange(bytes, curse, curse+=1);
             int tag = Integer.parseInt(binary(constanTag, 10));
             ConstantPoolInfo poolInfo = ConstantPoolInfo.fromTag(tag);
@@ -56,6 +56,34 @@ public class ClassFileAnalyzer {
                     System.out.println("utf8 length: " + binary(length, 10));
                     byte[] utf8Value = Arrays.copyOfRange(bytes, curse, curse+=intLength);
                     System.out.println("utf8 value: " + new String(utf8Value, "UTF-8"));
+                    break;
+                case CONSTANT_NAMEANDTYPE_INFO:
+                    byte[] nameIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    byte[] descriptorIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    System.out.println("nameIndex: " + binary(nameIndex, 10));
+                    System.out.println("descriptorIndex: " + binary(descriptorIndex, 10));
+                    break;
+                case CONSTANT_METHODHANDLE_INFO:
+                    byte[] referenceIndex1 = Arrays.copyOfRange(bytes, curse, curse+=1);
+                    byte[] referenceIndex2 = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    System.out.println("referenceIndex1: " + binary(referenceIndex1, 10));
+                    System.out.println("referenceIndex2: " + binary(referenceIndex2, 10));
+                    break;
+                case CONSTANT_METHODTYPE_INFO:
+                    byte[] descriptorIndex2 = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    System.out.println("descriptorIndex: " + binary(descriptorIndex2, 10));
+                    break;
+                case CONSTANT_INVOKEDYNAMIC_INFO:
+                    byte[] bootstrapMethodAttrIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    byte[] nameAndTypeIndex2 = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    System.out.println("bootstrapMethodAttrIndex: " + binary(bootstrapMethodAttrIndex, 10));
+                    System.out.println("nameAndTypeIndex: " + binary(nameAndTypeIndex2, 10));
+                    break;
+                case CONSTANT_INTERFACEMETHODREF_INFO:
+                    byte[] classIndex2 = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    byte[] nameAndTypeIndexU2 = Arrays.copyOfRange(bytes, curse, curse+=2);
+                    System.out.println("nameIndex: " + binary(classIndex2, 10));
+                    System.out.println("descriptorIndex: " + binary(nameAndTypeIndexU2, 10));
                     break;
             }
         }
