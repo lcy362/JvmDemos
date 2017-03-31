@@ -26,11 +26,11 @@ public class ClassFileAnalyzer {
         byte[] constantPoolSize = Arrays.copyOfRange(bytes, curse, curse+=2);
         int constantSize = Integer.parseInt(binary(constantPoolSize, 10));
         System.out.println("constantPoolSize: " + constantSize);
-        for (int i = 0; i < constantSize - 1; i++) {
+        for (int i = 1; i < constantSize; i++) {
             byte[] constanTag = Arrays.copyOfRange(bytes, curse, curse+=1);
             int tag = Integer.parseInt(binary(constanTag, 10));
             ConstantPoolInfo poolInfo = ConstantPoolInfo.fromTag(tag);
-            System.out.println(poolInfo);
+            System.out.println(i + "th: " + poolInfo);
             switch (poolInfo) {
                 case CONSTANT_METHODREF_INFO: case CONSTANT_FIELDREF_INFO:
                     byte[] classIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
