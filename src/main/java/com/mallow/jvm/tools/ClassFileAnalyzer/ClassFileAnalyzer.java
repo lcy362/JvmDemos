@@ -128,7 +128,7 @@ public class ClassFileAnalyzer {
             if (isInfoConstant(constant)) {
                 builder.append("--" + printInfoPool(constant));
             } else {
-                builder.append(printRefPool(constant, pool));
+                builder.append(printRefPool(constant, pool, "\t"));
             }
             log.info(builder.toString());
         }
@@ -142,21 +142,21 @@ public class ClassFileAnalyzer {
         return constant.getInfo();
     }
 
-    private String printRefPool(ConstantPool constant, List<ConstantPool> pool) {
+    private String printRefPool(ConstantPool constant, List<ConstantPool> pool, String prefix) {
         if (isInfoConstant(constant)) {
             log.error("not a ref constant: " + constant);
             return null;
         }
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, Integer> ref : constant.getRefs().entrySet()) {
-            builder.append("\n");
+            builder.append("\n" + prefix);
             builder.append(ref.getKey() + "=" + ref.getValue() + "");
             ConstantPool refConstant = pool.get(ref.getValue());
             if (isInfoConstant(refConstant)) {
                 builder.append("(" + printInfoPool(refConstant) + ")");
             } else {
                 builder.append(":" + refConstant.getType() + "---");
-                builder.append(printRefPool(refConstant, pool));
+                builder.append(printRefPool(refConstant, pool, prefix + "\t"));
             }
         }
         return builder.toString();
