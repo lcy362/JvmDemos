@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by lcy on 2017/3/9.
@@ -36,13 +34,17 @@ public class ClassFileAnalyzer {
             int tag = Integer.parseInt(binary(constanTag, 10));
             ConstantPoolInfo poolInfo = ConstantPoolInfo.fromTag(tag);
             System.out.println(i + "th: " + poolInfo);
-
+            constant.setType(poolInfo);
+            Map<String, Integer> refs = new HashMap<>();
+            constant.setRefs(refs);
             switch (poolInfo) {
                 case CONSTANT_METHODREF_INFO: case CONSTANT_FIELDREF_INFO:
                     byte[] classIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
                     byte[] nameAndTypeIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
                     System.out.println("class index: " + binary(classIndex, 10));
+                    System.out.println(binaryToDecimal(classIndex));
                     System.out.println("name and type index: " + binary(nameAndTypeIndex, 10));
+                    System.out.println(binaryToDecimal(nameAndTypeIndex));
                     break;
                 case CONSTANT_CLASS_INFO: case CONSTANT_STRING_INFO:
                     byte[] index = Arrays.copyOfRange(bytes, curse, curse+=2);
@@ -98,5 +100,9 @@ public class ClassFileAnalyzer {
 
     public static String binary(byte[] bytes, int radix){
         return new BigInteger(1, bytes).toString(radix);// 这里的1代表正数
+    }
+
+    public static int binaryToDecimal(byte[] bytes){
+        return new BigInteger(1, bytes).intValue();
     }
 }
