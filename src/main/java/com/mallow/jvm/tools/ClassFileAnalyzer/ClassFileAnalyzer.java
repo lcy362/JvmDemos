@@ -15,7 +15,16 @@ import java.util.*;
  */
 @Slf4j
 public class ClassFileAnalyzer {
-    public static void main(String args[]) throws IOException {
+    private static ClassFileAnalyzer instance;
+    private ClassFileAnalyzer() {}
+
+    public static synchronized ClassFileAnalyzer getInstance() {
+        if (instance == null) {
+            instance = new ClassFileAnalyzer();
+        }
+        return instance;
+    }
+    public void process() throws IOException {
         File file = new File("TestClass.class");
         FileInputStream inputStream = new FileInputStream(file);
         byte[] bytes = IOUtils.toByteArray(inputStream);
@@ -102,15 +111,15 @@ public class ClassFileAnalyzer {
         printConstantPool(pool, constantSize);
     }
 
-    public static String binary(byte[] bytes, int radix){
+    public String binary(byte[] bytes, int radix){
         return new BigInteger(1, bytes).toString(radix);// 这里的1代表正数
     }
 
-    public static int binaryToDecimal(byte[] bytes){
+    public int binaryToDecimal(byte[] bytes){
         return new BigInteger(1, bytes).intValue();
     }
 
-    private static void printConstantPool(List<ConstantPool> pool, int constantSize) {
+    private void printConstantPool(List<ConstantPool> pool, int constantSize) {
         for (int i = 1; i < constantSize; i++) {
             StringBuilder builder = new StringBuilder();
             builder.append(i + "th constant: ");
@@ -125,7 +134,7 @@ public class ClassFileAnalyzer {
         }
     }
 
-    private static String printInfoPool(ConstantPool constant) {
+    private String printInfoPool(ConstantPool constant) {
         if (!isInfoConstant(constant)) {
             log.error("not a info constant: " + constant);
             return null;
@@ -133,7 +142,7 @@ public class ClassFileAnalyzer {
         return constant.getInfo();
     }
 
-    private static String printRefPool(ConstantPool constant, List<ConstantPool> pool) {
+    private String printRefPool(ConstantPool constant, List<ConstantPool> pool) {
         if (isInfoConstant(constant)) {
             log.error("not a ref constant: " + constant);
             return null;
@@ -153,7 +162,11 @@ public class ClassFileAnalyzer {
         return builder.toString();
     }
 
-    private static boolean isInfoConstant(ConstantPool constant) {
+    private boolean isInfoConstant(ConstantPool constant) {
         return StringUtils.isNotBlank(constant.getInfo()) && constant.getRefs().size() == 0;
+    }
+
+    public static void main(String args[]) throws IOException {
+        ClassFileAnalyzer.getInstance().process();
     }
 }
