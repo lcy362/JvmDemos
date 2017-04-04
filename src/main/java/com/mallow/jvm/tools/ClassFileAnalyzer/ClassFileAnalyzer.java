@@ -99,7 +99,7 @@ public class ClassFileAnalyzer {
             }
             pool.add(constant);
         }
-        outputConstantPool(pool, constantSize);
+        printConstantPool(pool, constantSize);
     }
 
     public static String binary(byte[] bytes, int radix){
@@ -110,20 +110,53 @@ public class ClassFileAnalyzer {
         return new BigInteger(1, bytes).intValue();
     }
 
-    private static void outputConstantPool(List<ConstantPool> pool, int constantSize) {
+    private static void printConstantPool(List<ConstantPool> pool, int constantSize) {
         for (int i = 1; i < constantSize; i++) {
             StringBuilder builder = new StringBuilder();
             builder.append(i + "th constant: ");
             ConstantPool constant = pool.get(i);
             builder.append(constant.getType() + " -- ");
             if (StringUtils.isNotBlank(constant.getInfo())) {
-                builder.append(constant.getInfo());
+                builder.append(printInfoPool(constant));
             }
-            for (Map.Entry<String, Integer> ref : constant.getRefs().entrySet()) {
-                builder.append(ref.getKey() + "=" + ref.getValue() + "(");
-                builder.append(pool.get(ref.getValue()).getInfo() + ")");
+            builder.append("\n");
+            if (isInfoConstant(constant)) {
+                builder.append(printInfoPool(constant));
+            } else {
+                builder.append(printRefPool(constant, pool));
             }
             log.info(builder.toString());
         }
+    }
+
+    private static String printInfoPool(ConstantPool constant) {
+        if (!isInfoConstant(constant)) {
+            log.error("not a info constant: " + constant);
+            return null;
+        }
+        return constant.getInfo();
+    }
+
+    private static String printRefPool(ConstantPool constant, List<ConstantPool> pool) {
+        if (isInfoConstant(constant)) {
+            log.error("not a ref constant: " + constant);
+            return null;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, Integer> ref : constant.getRefs().entrySet()) {
+            builder.append(ref.getKey() + "=" + ref.getValue() + "");
+            ConstantPool refConstant = pool.get(ref.getValue());
+            if (isInfoConstant(refConstant)) {
+                builder.append(printInfoPool(refConstant));
+            } else {
+                builder.append(printRefPool(refConstant, pool));
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+
+    private static boolean isInfoConstant(ConstantPool constant) {
+        return StringUtils.isNotBlank(constant.getInfo()) && constant.getRefs().size() == 0;
     }
 }
