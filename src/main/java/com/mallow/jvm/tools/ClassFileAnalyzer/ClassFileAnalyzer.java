@@ -1,5 +1,6 @@
 package com.mallow.jvm.tools.ClassFileAnalyzer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.*;
 /**
  * Created by lcy on 2017/3/9.
  */
+@Slf4j
 public class ClassFileAnalyzer {
     public static void main(String args[]) throws IOException {
         File file = new File("TestClass.class");
@@ -96,9 +98,7 @@ public class ClassFileAnalyzer {
             }
             pool.add(constant);
         }
-        for (int i = 1; i < constantSize; i++) {
-            System.out.println(i + "th constant: " + pool.get(i));
-        }
+        outputConstantPool(pool, constantSize);
     }
 
     public static String binary(byte[] bytes, int radix){
@@ -107,5 +107,11 @@ public class ClassFileAnalyzer {
 
     public static int binaryToDecimal(byte[] bytes){
         return new BigInteger(1, bytes).intValue();
+    }
+
+    private static void outputConstantPool(List<ConstantPool> pool, int constantSize) {
+        for (int i = 1; i < constantSize; i++) {
+            log.info(i + "th constant: " + pool.get(i));
+        }
     }
 }
