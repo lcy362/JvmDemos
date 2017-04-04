@@ -3,6 +3,7 @@ package com.mallow.jvm.tools.ClassFileAnalyzer;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lcy on 2017/3/31.
@@ -11,5 +12,5 @@ import java.util.List;
 public class ConstantPool {
     private ConstantPoolInfo type;
     private String info;
-    private List<Integer> refs;
+    private Map<String, Integer> refs;
 }

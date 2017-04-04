@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by lcy on 2017/3/9.
@@ -26,11 +28,15 @@ public class ClassFileAnalyzer {
         byte[] constantPoolSize = Arrays.copyOfRange(bytes, curse, curse+=2);
         int constantSize = Integer.parseInt(binary(constantPoolSize, 10));
         System.out.println("constantPoolSize: " + constantSize);
+        List<ConstantPool> pool = new ArrayList<>();
+        pool.add(new ConstantPool()); //first constant
         for (int i = 1; i < constantSize; i++) {
+            ConstantPool constant = new ConstantPool();
             byte[] constanTag = Arrays.copyOfRange(bytes, curse, curse+=1);
             int tag = Integer.parseInt(binary(constanTag, 10));
             ConstantPoolInfo poolInfo = ConstantPoolInfo.fromTag(tag);
             System.out.println(i + "th: " + poolInfo);
+
             switch (poolInfo) {
                 case CONSTANT_METHODREF_INFO: case CONSTANT_FIELDREF_INFO:
                     byte[] classIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
@@ -86,6 +92,7 @@ public class ClassFileAnalyzer {
                     System.out.println("descriptorIndex: " + binary(nameAndTypeIndexU2, 10));
                     break;
             }
+            pool.add(constant);
         }
     }
 
