@@ -2,6 +2,7 @@ package com.mallow.jvm.tools.ClassFileAnalyzer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -111,7 +112,18 @@ public class ClassFileAnalyzer {
 
     private static void outputConstantPool(List<ConstantPool> pool, int constantSize) {
         for (int i = 1; i < constantSize; i++) {
-            log.info(i + "th constant: " + pool.get(i));
+            StringBuilder builder = new StringBuilder();
+            builder.append(i + "th constant: ");
+            ConstantPool constant = pool.get(i);
+            builder.append(constant.getType() + " -- ");
+            if (StringUtils.isNotBlank(constant.getInfo())) {
+                builder.append(constant.getInfo());
+            }
+            for (Map.Entry<String, Integer> ref : constant.getRefs().entrySet()) {
+                builder.append(ref.getKey() + "=" + ref.getValue() + "(");
+                builder.append(pool.get(ref.getValue()).getInfo() + ")");
+            }
+            log.info(builder.toString());
         }
     }
 }
