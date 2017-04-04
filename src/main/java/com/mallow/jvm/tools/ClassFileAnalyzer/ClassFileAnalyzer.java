@@ -146,8 +146,8 @@ public class ClassFileAnalyzer {
             if (isInfoConstant(refConstant)) {
                 builder.append("(" + printInfoPool(refConstant) + ")");
             } else {
-                builder.append("another ref");
-//                builder.append(printRefPool(refConstant, pool));
+                builder.append(":" + refConstant.getType() + "---");
+                builder.append(printRefPool(refConstant, pool));
             }
         }
         return builder.toString();
