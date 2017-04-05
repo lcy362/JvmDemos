@@ -14,9 +14,15 @@ public class AccessFlags {
     public static final short ACC_TRANSIENT = 0x0080;
     public static final short ACC_NATIVE = 0x0100;
     public static final short ACC_INTERFACE = 0x0200;
-    public static final short ABSTRACT = 0x0400;
+    public static final short ACC_ABSTRACT = 0x0400;
     public static final short ACC_STRICTFP = 0x0800;
     public static final short ACC_SYNTHETIC = 0x1000;
     public static final short ACC_ANNOTATION = 0x2000;
     public static final short ACC_ENUM = 0x4000;
+
+    public static String getAccessFlags(String accessFlags) {
+        short shortFlag = Short.parseShort(accessFlags, 16);
+        System.out.println(shortFlag & ACC_INTERFACE);
+        return null;
+    }
 }

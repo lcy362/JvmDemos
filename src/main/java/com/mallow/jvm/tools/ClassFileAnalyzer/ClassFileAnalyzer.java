@@ -111,6 +111,7 @@ public class ClassFileAnalyzer {
         printConstantPool(pool, constantSize);
         byte[] accessFlag = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("accessFlag: " + binary(accessFlag, 16));
+        AccessFlags.getAccessFlags(binary(accessFlag, 16));
     }
 
     public String binary(byte[] bytes, int radix){
