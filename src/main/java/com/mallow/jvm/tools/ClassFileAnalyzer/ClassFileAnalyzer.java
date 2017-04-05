@@ -25,7 +25,7 @@ public class ClassFileAnalyzer {
         return instance;
     }
     public void process() throws IOException {
-        File file = new File("TestClass.class");
+        File file = new File("ConstantPoolInfo.class");
         FileInputStream inputStream = new FileInputStream(file);
         byte[] bytes = IOUtils.toByteArray(inputStream);
         int curse = 0;
@@ -109,6 +109,8 @@ public class ClassFileAnalyzer {
             pool.add(constant);
         }
         printConstantPool(pool, constantSize);
+        byte[] accessFlag = Arrays.copyOfRange(bytes, curse, curse+=2);
+        log.info("accessFlag: " + binary(accessFlag, 16));
     }
 
     public String binary(byte[] bytes, int radix){
