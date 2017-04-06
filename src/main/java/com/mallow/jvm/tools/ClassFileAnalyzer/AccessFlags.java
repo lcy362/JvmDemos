@@ -1,5 +1,7 @@
 package com.mallow.jvm.tools.ClassFileAnalyzer;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by lcy on 2017/4/5.
  */
@@ -22,7 +24,27 @@ public class AccessFlags {
 
     public static String getAccessFlags(String accessFlags) {
         short shortFlag = Short.parseShort(accessFlags, 16);
-        System.out.println(shortFlag & ACC_INTERFACE);
+
+        StringBuilder flag = new StringBuilder();
+
+        Field[] fields = AccessFlags.class.getFields();
+        for (Field field : fields) {
+            String name = field.getName();
+            if (!name.startsWith("ACC_")) {
+                continue;
+            }
+            short value = 0;
+            try {
+                value = field.getShort(AccessFlags.class);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            if ((value&shortFlag) != 0) {
+                flag.append(name.split("_")[1] + " ");
+            }
+        }
+        System.out.println(flag.toString());
         return null;
+
     }
 }
