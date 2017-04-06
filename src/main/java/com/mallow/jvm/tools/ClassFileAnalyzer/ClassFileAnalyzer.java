@@ -109,9 +109,10 @@ public class ClassFileAnalyzer {
             pool.add(constant);
         }
         printConstantPool(pool, constantSize);
+
         byte[] accessFlag = Arrays.copyOfRange(bytes, curse, curse+=2);
-        log.info("accessFlag: " + binary(accessFlag, 16));
-        AccessFlags.getAccessFlags(binary(accessFlag, 16));
+        String flagString = AccessFlags.getAccessFlags(binary(accessFlag, 16));
+        log.info("accessFlag: " + binary(accessFlag, 16) + ": " + flagString);
     }
 
     public String binary(byte[] bytes, int radix){

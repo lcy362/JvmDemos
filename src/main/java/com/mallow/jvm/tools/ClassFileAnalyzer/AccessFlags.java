@@ -43,8 +43,7 @@ public class AccessFlags {
                 flag.append(name.split("_")[1] + " ");
             }
         }
-        System.out.println(flag.toString());
-        return null;
+        return flag.toString();
 
     }
 }
