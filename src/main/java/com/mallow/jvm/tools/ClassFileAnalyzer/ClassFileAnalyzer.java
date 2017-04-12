@@ -119,6 +119,7 @@ public class ClassFileAnalyzer {
         log.info("superClass: " + printOnePool(pool, binaryToDecimal(superClass)));
 
         curse = interfaceProcess(bytes, pool, curse);
+        curse = fieldProcess(bytes, pool, curse);
     }
 
     public String binary(byte[] bytes, int radix){
@@ -188,6 +189,15 @@ public class ClassFileAnalyzer {
         for (int i = 0; i < binaryToDecimal(count); i++) {
             byte[] oneInterface = Arrays.copyOfRange(bytes, curse, curse+=2);
             log.info("interface: " + binaryToDecimal(oneInterface) + " " + printOnePool(pool, binaryToDecimal(oneInterface)));
+        }
+        return curse;
+    }
+
+    private int fieldProcess(byte[] bytes, List<ConstantPool> pool, int curse) {
+        byte[] count = Arrays.copyOfRange(bytes, curse, curse+=2);
+        log.info("field count: " + binaryToDecimal(count));
+        for (int i=0; i<binaryToDecimal(count); i++) {
+
         }
         return curse;
     }
