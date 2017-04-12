@@ -114,7 +114,7 @@ public class ClassFileAnalyzer {
         String flagString = AccessFlags.getAccessFlags(binary(accessFlag, 16));
         log.info("accessFlag: " + binary(accessFlag, 16) + ": " + flagString);
         byte[] thisClass = Arrays.copyOfRange(bytes, curse, curse+=2);
-        log.info("thisClass: " + pool.get(binaryToDecimal(thisClass)));
+        log.info("thisClass: " + printOnePool(pool, binaryToDecimal(thisClass)));
     }
 
     public String binary(byte[] bytes, int radix){
@@ -129,15 +129,21 @@ public class ClassFileAnalyzer {
         for (int i = 1; i < constantSize; i++) {
             StringBuilder builder = new StringBuilder();
             builder.append(i + "th constant: ");
-            ConstantPool constant = pool.get(i);
-            builder.append(constant.getType());
-            if (isInfoConstant(constant)) {
-                builder.append("--" + printInfoPool(constant));
-            } else {
-                builder.append(printRefPool(constant, pool, "\t"));
-            }
+            builder.append(printOnePool(pool, i));
             log.info(builder.toString());
         }
+    }
+
+    private String printOnePool(List<ConstantPool> pool, int index) {
+        StringBuilder builder = new StringBuilder();
+        ConstantPool constant = pool.get(index);
+        builder.append(constant.getType());
+        if (isInfoConstant(constant)) {
+            builder.append("--" + printInfoPool(constant));
+        } else {
+            builder.append(printRefPool(constant, pool, "\t"));
+        }
+        return builder.toString();
     }
 
     private String printInfoPool(ConstantPool constant) {
