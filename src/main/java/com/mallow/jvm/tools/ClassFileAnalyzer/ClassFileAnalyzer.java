@@ -115,6 +115,8 @@ public class ClassFileAnalyzer {
         log.info("accessFlag: " + binary(accessFlag, 16) + ": " + flagString);
         byte[] thisClass = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("thisClass: " + printOnePool(pool, binaryToDecimal(thisClass)));
+        byte[] superClass = Arrays.copyOfRange(bytes, curse, curse+=2);
+        log.info("superClass: " + printOnePool(pool, binaryToDecimal(superClass)));
     }
 
     public String binary(byte[] bytes, int radix){
