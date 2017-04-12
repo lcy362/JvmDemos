@@ -117,6 +117,8 @@ public class ClassFileAnalyzer {
         log.info("thisClass: " + printOnePool(pool, binaryToDecimal(thisClass)));
         byte[] superClass = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("superClass: " + printOnePool(pool, binaryToDecimal(superClass)));
+
+        curse = interfaceProcess(bytes, pool, curse);
     }
 
     public String binary(byte[] bytes, int radix){
@@ -178,6 +180,16 @@ public class ClassFileAnalyzer {
 
     private boolean isInfoConstant(ConstantPool constant) {
         return StringUtils.isNotBlank(constant.getInfo()) && constant.getRefs().size() == 0;
+    }
+
+    private int interfaceProcess(byte[] bytes, List<ConstantPool> pool, int curse) {
+        byte[] count = Arrays.copyOfRange(bytes, curse, curse+=2);
+        log.info("interface count: " + binaryToDecimal(count));
+        for (int i = 0; i < binaryToDecimal(count); i++) {
+            byte[] oneInterface = Arrays.copyOfRange(bytes, curse, curse+=2);
+            log.info("interface: " + binaryToDecimal(oneInterface) + " " + printOnePool(pool, binaryToDecimal(oneInterface)));
+        }
+        return curse;
     }
 
     public static void main(String args[]) throws IOException {
