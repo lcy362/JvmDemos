@@ -29,12 +29,7 @@ public class ClassFileAnalyzer {
         FileInputStream inputStream = new FileInputStream(file);
         byte[] bytes = IOUtils.toByteArray(inputStream);
         int curse = 0;
-        byte[] magic = Arrays.copyOfRange(bytes, curse, curse+=4);
-        System.out.println("magic is: " + binary(magic, 16));
-        byte[] minorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
-        byte[] majorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
-        System.out.println("majorVersion: " + binary(majorVersion, 10));
-        System.out.println("minorVersion: " + binary(minorVersion, 10));
+        curse = basicInfoProcess(bytes, curse);
         byte[] constantPoolSize = Arrays.copyOfRange(bytes, curse, curse+=2);
         int constantSize = Integer.parseInt(binary(constantPoolSize, 10));
         System.out.println("constantPoolSize: " + constantSize);
@@ -120,6 +115,16 @@ public class ClassFileAnalyzer {
 
         curse = interfaceProcess(bytes, pool, curse);
         curse = fieldProcess(bytes, pool, curse);
+    }
+
+    private int basicInfoProcess(byte[] bytes, int curse) {
+        byte[] magic = Arrays.copyOfRange(bytes, curse, curse+=4);
+        log.info("magic is: " + binary(magic, 16));
+        byte[] minorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
+        byte[] majorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
+        log.info("majorVersion: " + binary(majorVersion, 10));
+        log.info("minorVersion: " + binary(minorVersion, 10));
+        return curse;
     }
 
     public String binary(byte[] bytes, int radix){
