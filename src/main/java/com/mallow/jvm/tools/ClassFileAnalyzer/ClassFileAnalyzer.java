@@ -84,19 +84,15 @@ public class ClassFileAnalyzer {
                 case CONSTANT_INTEGER_INFO: case CONSTANT_LONG_INFO: case CONSTANT_DOUBLE_INFO:
                     byte[] value4 = Arrays.copyOfRange(bytes, curse, curse+=4);
                     constant.setInfo(binary(value4, 10));
-//                    System.out.println("value: " + binary(value4, 10));
                     break;
                 case CONSTANT_FLOAT_INFO:
                     byte[] value2 = Arrays.copyOfRange(bytes, curse, curse+=2);
                     constant.setInfo(binary(value2, 10));
-//                    System.out.println("value: " + binary(value2, 10));
                     break;
                 case CONSTANT_UTF8_INFO:
                     byte[] length = Arrays.copyOfRange(bytes, curse, curse+=2);
                     int intLength = Integer.parseInt(binary(length, 10));
-//                    System.out.println("utf8 length: " + binary(length, 10));
                     byte[] utf8Value = Arrays.copyOfRange(bytes, curse, curse+=intLength);
-//                    System.out.println("utf8 value: " + new String(utf8Value, "UTF-8"));
                     constant.setInfo(new String(utf8Value, "UTF-8"));
                     break;
                 case CONSTANT_NAMEANDTYPE_INFO:
