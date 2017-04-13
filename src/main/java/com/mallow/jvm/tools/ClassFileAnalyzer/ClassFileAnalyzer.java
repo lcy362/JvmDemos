@@ -205,7 +205,22 @@ public class ClassFileAnalyzer {
         byte[] count = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("field count: " + binaryToDecimal(count));
         for (int i=0; i<binaryToDecimal(count); i++) {
+            byte[] accessFlag = Arrays.copyOfRange(bytes, curse, curse+=2);
+            String flagString = AccessFlags.getAccessFlags(binary(accessFlag, 16));
+            log.info("accessFlag: " + binary(accessFlag, 16) + ": " + flagString);
 
+            byte[] nameIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
+            log.info("nameIndex: " + binaryToDecimal(nameIndex) + " " + printOnePool(pool, binaryToDecimal(nameIndex)));
+
+            byte[] descriptorIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
+            log.info("nameIndex: " + binaryToDecimal(descriptorIndex) + " " + printOnePool(pool, binaryToDecimal(descriptorIndex)));
+
+            byte[] attributesCount = Arrays.copyOfRange(bytes, curse, curse+=2);
+            log.info("attribute count: " + binaryToDecimal(attributesCount));
+
+            for (int j=0; j<binaryToDecimal(attributesCount); j++) {
+
+            }
         }
         return curse;
     }
