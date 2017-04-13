@@ -30,31 +30,31 @@ public class ClassFileAnalyzer {
         FileInputStream inputStream = new FileInputStream(file);
         byte[] bytes = IOUtils.toByteArray(inputStream);
         int curse = 0;
-        curse = basicInfoProcess(bytes, curse);
-        List<ConstantPool> pool = new ArrayList<>();
 
+        byte[] magic = Arrays.copyOfRange(bytes, curse, curse+=4);
+        log.info("magic is: " + binary(magic, 16));
+
+        byte[] minorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
+        byte[] majorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
+        log.info("majorVersion: " + binary(majorVersion, 10));
+        log.info("minorVersion: " + binary(minorVersion, 10));
+
+        List<ConstantPool> pool = new ArrayList<>();
         curse = constantPoolProcess(bytes, pool, curse);
 
         byte[] accessFlag = Arrays.copyOfRange(bytes, curse, curse+=2);
         String flagString = AccessFlags.getAccessFlags(binary(accessFlag, 16));
         log.info("accessFlag: " + binary(accessFlag, 16) + ": " + flagString);
+
         byte[] thisClass = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("thisClass: " + printOnePool(pool, binaryToDecimal(thisClass)));
+
         byte[] superClass = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("superClass: " + printOnePool(pool, binaryToDecimal(superClass)));
 
         curse = interfaceProcess(bytes, pool, curse);
-        curse = fieldProcess(bytes, pool, curse);
-    }
 
-    private int basicInfoProcess(byte[] bytes, int curse) {
-        byte[] magic = Arrays.copyOfRange(bytes, curse, curse+=4);
-        log.info("magic is: " + binary(magic, 16));
-        byte[] minorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
-        byte[] majorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
-        log.info("majorVersion: " + binary(majorVersion, 10));
-        log.info("minorVersion: " + binary(minorVersion, 10));
-        return curse;
+        curse = fieldProcess(bytes, pool, curse);
     }
 
     private int constantPoolProcess(byte[] bytes, List<ConstantPool> pool, int curse) throws IOException {
