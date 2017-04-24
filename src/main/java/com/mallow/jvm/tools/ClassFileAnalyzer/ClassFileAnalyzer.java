@@ -25,8 +25,8 @@ public class ClassFileAnalyzer {
         }
         return instance;
     }
-    public void process() throws IOException {
-        File file = new File("TestClass.class");
+    public void process(String fileName) throws IOException {
+        File file = new File(fileName);
         FileInputStream inputStream = new FileInputStream(file);
         byte[] bytes = IOUtils.toByteArray(inputStream);
         int curse = 0;
@@ -226,6 +226,6 @@ public class ClassFileAnalyzer {
     }
 
     public static void main(String args[]) throws IOException {
-        ClassFileAnalyzer.getInstance().process();
+        ClassFileAnalyzer.getInstance().process("TestClass.class");
     }
 }
