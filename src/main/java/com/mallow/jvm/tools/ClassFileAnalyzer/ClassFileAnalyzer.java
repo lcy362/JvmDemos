@@ -31,27 +31,34 @@ public class ClassFileAnalyzer {
         byte[] bytes = IOUtils.toByteArray(inputStream);
         int curse = 0;
 
+        //magic : CAFEBABE
         byte[] magic = Arrays.copyOfRange(bytes, curse, curse+=4);
         log.info("magic is: " + binary(magic, 16));
 
+        // jdk version
         byte[] minorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
         byte[] majorVersion = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("majorVersion: " + binary(majorVersion, 10));
         log.info("minorVersion: " + binary(minorVersion, 10));
 
+        // read constant pool
         List<ConstantPool> pool = new ArrayList<>();
         curse = constantPoolProcess(bytes, pool, curse);
 
+        // access flag: prefix of class,like public,static,enum.etc
         byte[] accessFlag = Arrays.copyOfRange(bytes, curse, curse+=2);
         String flagString = AccessFlags.getAccessFlags(binary(accessFlag, 16));
         log.info("accessFlag: " + binary(accessFlag, 16) + ": " + flagString);
 
+        // class name index, refer to the constant pool, which contains the real info
         byte[] thisClass = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("thisClass: " + printOnePool(pool, binaryToDecimal(thisClass)));
 
+        // super class index, similar as this class
         byte[] superClass = Arrays.copyOfRange(bytes, curse, curse+=2);
         log.info("superClass: " + printOnePool(pool, binaryToDecimal(superClass)));
 
+        // interfaces
         curse = interfaceProcess(bytes, pool, curse);
 
         curse = fieldProcess(bytes, pool, curse);
@@ -61,7 +68,7 @@ public class ClassFileAnalyzer {
         byte[] constantPoolSize = Arrays.copyOfRange(bytes, curse, curse+=2);
         int constantSize = Integer.parseInt(binary(constantPoolSize, 10));
         System.out.println("constantPoolSize: " + constantSize);
-        pool.add(new ConstantPool()); //first constant
+        pool.add(new ConstantPool()); //real constant starts at index 1
         for (int i = 1; i < constantSize; i++) {
             ConstantPool constant = new ConstantPool();
             byte[] constanTag = Arrays.copyOfRange(bytes, curse, curse+=1);
@@ -219,7 +226,8 @@ public class ClassFileAnalyzer {
             log.info("attribute count: " + binaryToDecimal(attributesCount));
 
             for (int j=0; j<binaryToDecimal(attributesCount); j++) {
-
+                byte[] attributeNameIndex = Arrays.copyOfRange(bytes, curse, curse+=2);
+                System.out.println("attributeNameIndex: " + binaryToDecimal(attributeNameIndex));
             }
         }
         return curse;
