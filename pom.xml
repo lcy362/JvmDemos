@@ -39,6 +39,13 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
         </dependency>
+        <dependency>
+            <groupId>sun.jvm.hotspot</groupId>
+            <artifactId>sa-jdi</artifactId>
+            <version>${java.version}</version>
+            <scope>system</scope>
+            <systemPath>${java.home}/../lib/sa-jdi.jar</systemPath>
+        </dependency>
 
     </dependencies>
 
