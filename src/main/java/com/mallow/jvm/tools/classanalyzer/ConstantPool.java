@@ -1,8 +1,7 @@
-package com.mallow.jvm.tools.ClassFileAnalyzer;
+package com.mallow.jvm.tools.classanalyzer;
 
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 /**

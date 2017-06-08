@@ -1,4 +1,4 @@
-package com.mallow.jvm.tools.ClassFileAnalyzer;
+package com.mallow.jvm.tools.classanalyzer;
 
 public enum ConstantPoolInfo {
     CONSTANT_UTF8_INFO(1, " UTF-8"), CONSTANT_INTEGER_INFO(3, "Integer"),CONSTANT_FLOAT_INFO(4, "Float"),

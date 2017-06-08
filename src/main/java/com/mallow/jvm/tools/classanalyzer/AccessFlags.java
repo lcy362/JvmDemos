@@ -1,4 +1,4 @@
-package com.mallow.jvm.tools.ClassFileAnalyzer;
+package com.mallow.jvm.tools.classanalyzer;
 
 import java.lang.reflect.Field;
 

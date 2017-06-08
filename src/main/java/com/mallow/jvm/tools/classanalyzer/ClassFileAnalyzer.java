@@ -1,4 +1,4 @@
-package com.mallow.jvm.tools.ClassFileAnalyzer;
+package com.mallow.jvm.tools.classanalyzer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.*;
 
