@@ -233,6 +233,10 @@ public class ClassFileAnalyzer {
     }
 
     public static void main(String args[]) throws IOException {
-        ClassFileAnalyzer.getInstance().process("TestClass.class");
+        String className = "TestClass.class";
+        if (args.length >= 1) {
+            className = args[0];
+        }
+        ClassFileAnalyzer.getInstance().process(className);
     }
 }
